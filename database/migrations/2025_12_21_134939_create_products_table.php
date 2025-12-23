@@ -17,6 +17,7 @@ class CreateProductsTable extends Migration
             return;
         }
 
+        // bảng sản phẩm
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name')->comment("Tên sản phẩm");

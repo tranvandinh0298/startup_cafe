@@ -29,3 +29,13 @@ const INVENTORY_ACTION_TYPES = [
     'discard',
     'expire'
 ];
+
+const ORDER_STATUSES = [
+    'draft',
+    'confirmed',
+    'paid',
+    'completed',
+    'cancelled'
+];
+
+const ORDER_STATUS_DEFAULT = 'draft';

@@ -17,12 +17,13 @@ class CreateInventoryLotsTable extends Migration
             return;
         }
 
+        // lô nhập kho
         Schema::create('inventory_lots', function (Blueprint $table) {
             $table->id();
             $table->foreignId('ingredient_id')->constrained('ingredients')->onDelete('cascade');
-            $table->integer('quantity_packages')->default(0);
-            $table->dateTime("received_at");
-            $table->dateTime("expired_at");
+            $table->integer('quantity_packages')->default(0)->comment("Số lượng gói/hộp nhập");
+            $table->dateTime("received_at")->comment("Thời điểm nhập kho");
+            $table->dateTime("expired_at")->comment("Hạn sử dụng của lô hàng = received_at + shelf_life_closed_days");
             $table->string("supplier_note")->nullable();
             $table->timestamps();
             $table->softDeletes();

@@ -17,6 +17,7 @@ class CreateProductIngredientsTable extends Migration
             return;
         }
 
+        // bảng nguyên liệu của sản phẩm
         Schema::create('product_ingredients', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');

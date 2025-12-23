@@ -17,6 +17,7 @@ class CreateCategoriesTable extends Migration
             return;
         }
 
+        // bảng danh mục
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->string('name')->comment("Tên danh mục");
