@@ -21,4 +21,8 @@ class Product extends Model
     {
         return $this->hasMany(ProductIngredient::class, 'product_id');
     }
+
+    public function orderItem(): HasMany {
+        return $this->hasMany(OrderItem::class, 'product_id');
+    }
 }

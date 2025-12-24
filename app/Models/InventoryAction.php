@@ -30,4 +30,13 @@ class InventoryAction extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function order(): BelongsTo
+    {
+        return $this->belongsTo(Order::class, 'order_id');
+    }
+
+    public function orderItem(): BelongsTo {
+        return $this->belongsTo(OrderItem::class, 'order_item_id');
+    }
 }

@@ -23,6 +23,7 @@ class CreateOrdersTable extends Migration
             $table->string('order_code')->unique()->comment("Mã đơn hàng");
             $table->enum('status', ORDER_STATUSES)->default(ORDER_STATUS_DEFAULT)->comment("Trạng thái đơn hàng");
             $table->integer('total_amount')->default(0)->comment("Tổng tiền đơn hàng");
+            $table->dateTime('inventory_consumed_at')->nullable()->comment('Thời gian sử dụng nguyên liệu thô trong kho');
             $table->timestamps();
             $table->softDeletes();
         });
