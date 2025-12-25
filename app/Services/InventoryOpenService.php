@@ -6,6 +6,7 @@ use App\Models\Ingredient;
 use App\Models\InventoryAction;
 use App\Models\InventoryBatch;
 use App\Models\InventoryLot;
+use App\Models\ProductIngredient;
 use DomainException;
 use Illuminate\Support\Facades\DB;
 
@@ -51,5 +52,54 @@ class InventoryOpenService
 
             return $batch;
         });
+    }
+
+    public function suggest(): array
+    {
+        // Load open stock
+        $openStock = InventoryBatch::where('status', PACKAGE_STATUS_OPEN)
+            ->where('expired_at', '>', now())
+            ->get()
+            ->groupBy('ingredient_id')
+            ->map(fn($b) => $b->sum('remaining_quantity_base'));
+
+        // Load unopened packages
+        $unopened = InventoryLot::where('quantity_packages', '>', 0)
+            ->get()
+            ->groupBy('ingredient_id')
+            ->map(fn($l) => $l->sum('quantity_packages'));
+
+        $recipes = ProductIngredient::all()->groupBy('product_id');
+
+        $result = [];
+
+        foreach ($recipes as $productId => $items) {
+            $limits = [];
+
+            foreach ($items as $r) {
+                $available = $openStock[$r->ingredient_id] ?? 0;
+                $limit = intdiv($available, $r->quantity_per_unit);
+                $limits[$r->ingredient_id] = $limit;
+            }
+
+            $availableQty = min($limits);
+
+            if ($availableQty > 3) continue; // threshold configurable
+
+            foreach ($items as $r) {
+                if ($limits[$r->ingredient_id] === $availableQty) {
+                    if (($unopened[$r->ingredient_id] ?? 0) > 0) {
+                        $result[] = [
+                            'product_id' => $productId,
+                            'ingredient_id' => $r->ingredient_id,
+                            'can_open_batch' => true,
+                            'unopened_packages' => $unopened[$r->ingredient_id],
+                        ];
+                    }
+                }
+            }
+        }
+
+        return $result;
     }
 }
