@@ -12,6 +12,18 @@ class Product extends Model
 {
     use HasFactory, SoftDeletes;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name',
+        'category_id',
+        'selling_price',
+        'status'
+    ];
+
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class, 'category_id');
@@ -22,7 +34,8 @@ class Product extends Model
         return $this->hasMany(ProductIngredient::class, 'product_id');
     }
 
-    public function orderItem(): HasMany {
+    public function orderItem(): HasMany
+    {
         return $this->hasMany(OrderItem::class, 'product_id');
     }
 }

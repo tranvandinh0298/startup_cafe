@@ -19,6 +19,22 @@ class InventoryBatch extends Model
      */
     protected $table = 'inventory_batches';
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'ingredient_id',
+        'inventory_lot_id',
+        'initial_quantity_base',
+        'remaining_quantity_base',
+        'opened_at',
+        'expired_at',
+        'status',
+        'opened_by'
+    ];
+
     public function ingredient(): BelongsTo
     {
         return $this->belongsTo(Ingredient::class, 'ingredient_id');

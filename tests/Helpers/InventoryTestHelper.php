@@ -2,6 +2,7 @@
 
 namespace Tests\Helpers;
 
+use App\Models\Category;
 use App\Models\Ingredient;
 use App\Models\InventoryBatch;
 use App\Models\InventoryLot;
@@ -9,6 +10,7 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\ProductIngredient;
+use App\Models\User;
 
 trait InventoryTestHelper
 {
@@ -37,25 +39,32 @@ trait InventoryTestHelper
 
     protected function createOpenBatch(
         Ingredient $ingredient,
-        int $remaining
+        array $overrides,
+        InventoryLot $inventoryLot,
+        $user
     ): InventoryBatch {
-        return InventoryBatch::create([
+        return InventoryBatch::create( array_merge([
             'ingredient_id' => $ingredient->id,
-            'inventory_lot_id' => null,
+            'inventory_lot_id' => $inventoryLot->id,
             'opened_at' => now(),
             'expired_at' => now()->addHours(8),
-            'status' => 'open',
-            'initial_quantity_base' => $remaining,
-            'remaining_quantity_base' => $remaining,
-            'opened_by' => 1,
-        ]);
+            'status' => PACKAGE_STATUS_OPEN,
+            'initial_quantity_base' => 1000,
+            'remaining_quantity_base' => 1000,
+            'opened_by' => $user->id,
+        ], $overrides));
     }
 
     protected function createProduct(
-        string $name,
-        array $recipe // ingredient_id => qty
+        array $overrides,
+        array $recipe, // ingredient_id => qty,
+        Category $category
     ): Product {
-        $product = Product::create(['name' => $name]);
+        $product = Product::create(array_merge([
+            'name' => 'Product ' . uniqid(),
+            'category_id' => $category->id,
+            'selling_price' => 10000
+        ], $overrides));
 
         foreach ($recipe as $ingredientId => $qty) {
             ProductIngredient::create([
@@ -68,11 +77,11 @@ trait InventoryTestHelper
         return $product;
     }
 
-    protected function createOrder(array $items): Order
+    protected function createOrder(array $items, $orderStatus = ORDER_STATUS_DEFAULT): Order
     {
         $order = Order::create([
-            'status' => 'draft',
-            'created_at' => now(),
+            'order_code' => 'ORDER_' . uniqid(),
+            'status' => $orderStatus,
         ]);
 
         foreach ($items as $productId => $qty) {
@@ -84,5 +93,20 @@ trait InventoryTestHelper
         }
 
         return $order;
+    }
+
+    protected function createCategory(array $overrides = []): Category
+    {
+        $category = Category::create(array_merge([
+            'name' => 'Category ' . uniqid(),
+            'status' => RECORD_STATUS_DEFAULT
+        ], $overrides));
+
+        return $category;
+    }
+
+    protected function createUser()
+    {
+        return User::factory()->make();
     }
 }

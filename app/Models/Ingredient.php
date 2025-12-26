@@ -11,6 +11,20 @@ class Ingredient extends Model
 {
     use HasFactory, SoftDeletes;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name',
+        'base_unit',
+        'package_size',
+        'shelf_life_closed_days',
+        'shelf_life_opened_hours',
+        'reorder_threshold'
+    ];
+
     public function inventoryLots(): HasMany
     {
         return $this->hasMany(InventoryLot::class, 'ingredient_id');

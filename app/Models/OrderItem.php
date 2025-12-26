@@ -11,12 +11,25 @@ class OrderItem extends Model
 {
     use HasFactory, SoftDeletes;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'order_id',
+        'product_id',
+        'quantity',
+        'price'
+    ];
+
     public function order(): BelongsTo
     {
         return $this->belongsTo(Order::class, "order_id");
     }
 
-    public function product(): BelongsTo {
+    public function product(): BelongsTo
+    {
         return $this->belongsTo(Product::class, 'product_id');
     }
 }

@@ -11,6 +11,18 @@ class Order extends Model
 {
     use HasFactory, SoftDeletes;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'order_code',
+        'status',
+        'total_amount',
+        'inventory_consumed_at'
+    ];
+
     public function orderItem(): HasMany
     {
         return $this->hasMany(OrderItem::class, 'order_id');

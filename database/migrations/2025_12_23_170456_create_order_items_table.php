@@ -25,6 +25,7 @@ class CreateOrderItemsTable extends Migration
             $table->integer('quantity')->default(1)->comment("Số lượng sản phẩm trong đơn hàng");
             $table->integer('price')->default(0)->comment("Giá bán tại thời điểm đặt hàng");
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

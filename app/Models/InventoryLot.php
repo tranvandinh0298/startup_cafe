@@ -11,6 +11,19 @@ class InventoryLot extends Model
 {
     use HasFactory, SoftDeletes;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'ingredient_id',
+        'quantity_packages',
+        'received_at',
+        'expired_at',
+        'supplier_note'
+    ];
+
     public function ingredient(): BelongsTo
     {
         return $this->belongsTo(Ingredient::class, 'ingredient_id');
