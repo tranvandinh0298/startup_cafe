@@ -83,8 +83,6 @@ class InventoryAvailabilityTest extends TestCase
         $inventoryAvailabilityService = app(InventoryAvailabilityService::class);
         $result = $inventoryAvailabilityService->check($order->id);
 
-        Log::info("result: " . json_encode($result));
-
         $this->assertEquals(false, $result['ok']);
         $this->assertEquals(
             [

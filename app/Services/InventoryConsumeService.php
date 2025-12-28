@@ -9,6 +9,7 @@ use App\Models\OrderItem;
 use App\Models\ProductIngredient;
 use DomainException;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class InventoryConsumeService
 {
@@ -18,12 +19,13 @@ class InventoryConsumeService
 
             $order = Order::where('id', $orderId)->lockForUpdate()->firstOrFail();
 
-            if ($order->status !== 'paid') {
-                throw new DomainException('ORDER_NOT_PAID');
+            if ($order->inventory_consumed_at !== null) {
+                // idempotent
+                throw new DomainException(DOMAIN_EXCEPTION_INVENTORY_ALREADY_CONSUMED);
             }
 
-            if ($order->inventory_consumed_at !== null) {
-                return; // idempotent
+            if ($order->status !== ORDER_STATUS_PAID) {
+                throw new DomainException(DOMAIN_EXCEPTION_ORDER_NOT_PAID);
             }
 
             $orderItems = OrderItem::where('order_id', $orderId)->get();
@@ -38,7 +40,7 @@ class InventoryConsumeService
             $ingredientIds = $recipesByProduct->flatten()->pluck('ingredient_id')->unique();
 
             $batches = InventoryBatch::whereIn('ingredient_id', $ingredientIds)
-                ->where('status', 'open')
+                ->where('status', PACKAGE_STATUS_OPEN)
                 ->where('expired_at', '>', now())
                 ->orderBy('expired_at')
                 ->orderBy('opened_at')
@@ -65,15 +67,15 @@ class InventoryConsumeService
 
                         $batch->remaining_quantity_base = $have - $take;
                         if ($batch->remaining_quantity_base === 0) {
-                            $batch->status = 'used_up';
+                            $batch->status = PACKAGE_STATUS_USED_UP;
                         }
                         $batch->save();
 
                         InventoryAction::create([
-                            'action_type' => 'consume',
+                            'action_type' => INVENTORY_ACTION_TYPE_CONSUME,
                             'order_id' => $orderId,
                             'order_item_id' => $item->id,
-                            'ineventory_batch_id' => $batch->id,
+                            'inventory_batch_id' => $batch->id,
                             'inventory_lot_id' => $batch->inventory_lot_id,
                             'ingredient_id' => $ingredientId,
                             'quantity_base_units' => -$take,
@@ -84,15 +86,14 @@ class InventoryConsumeService
                     }
 
                     if ($need > 0) {
-                        throw new DomainException("INSUFFICIENT_INGREDIENT:{$ingredientId}");
+                        throw new DomainException(DOMAIN_EXCEPTION_INVENTORY_INSUFFICIENT);
                     }
                 }
             }
 
             $order->inventory_consumed_at = now();
-            $order->status = 'completed';
+            $order->status = ORDER_STATUS_COMPLETED;
             $order->save();
         });
     }
 }
-

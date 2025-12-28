@@ -11,6 +11,7 @@ use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\ProductIngredient;
 use App\Models\User;
+use Illuminate\Support\Str;
 
 trait InventoryTestHelper
 {
@@ -107,6 +108,12 @@ trait InventoryTestHelper
 
     protected function createUser()
     {
-        return User::factory()->make();
+        return User::create([
+            'name' => "User " . uniqid(),
+            'email' => "user" . uniqid() . "@example.com",
+            'email_verified_at' => now(),
+            'password' => bcrypt('password'),
+            'remember_token' => Str::random(10),
+        ]);
     }
 }

@@ -27,7 +27,7 @@ class CreateInventoryBatchesTable extends Migration
             $table->dateTime('opened_at')->comment('Thời điểm mở bao bì');
             $table->dateTime('expired_at')->comment("Hạn sử dụng sau khi mở bao bì = shelf_life_opened_hours + opened_at");
             $table->enum("status", PACKAGE_STATUS)->comment("Trạng thái của lô hàng");
-            $table->foreignId('opened_by')->nullable()->constrained('users')->onDelete('set null')->comment("Người mở bao bì");
+            $table->foreignId('opened_by')->constrained('users')->onDelete('cascade')->comment("Người mở bao bì");
             $table->timestamps();
             $table->softDeletes();
         });

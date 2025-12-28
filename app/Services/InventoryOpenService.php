@@ -26,7 +26,7 @@ class InventoryOpenService
                 ->first();
 
             if (!$lot) {
-                throw new DomainException('No inventory lot available for ingredient: ' . $ingredient->name);
+                throw new DomainException(DOMAIN_EXCEPTION_NO_LOT_FOUND);
             }
 
             $lot->decrement('quantity_packages');
@@ -43,7 +43,8 @@ class InventoryOpenService
             ]);
 
             InventoryAction::create([
-                'action_type' => 'open',
+                'ingredient_id' => $ingredientId,
+                'action_type' => PACKAGE_STATUS_OPEN,
                 'inventory_lot_id' => $lot->id,
                 'ineventory_batch_id' => $batch->id,
                 'quantity_packages' => -1,
