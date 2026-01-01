@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             CategoriesSeed::class,
             ProductsSeed::class,
             ProductIngredientsSeed::class,
+            UserSeed::class,
         ]);
     }
 }
