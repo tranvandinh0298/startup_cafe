@@ -2,9 +2,10 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
-use App\Models\User;
+use App\Filament\Resources\ProductResource\Pages;
+use App\Filament\Resources\ProductResource\RelationManagers;
+use App\Filament\Resources\ProductResource\RelationManagers\ProductIngredientsRelationManager;
+use App\Models\Product;
 use App\Traits\FilamentHelper;
 use Filament\Forms;
 use Filament\Resources\Form;
@@ -13,13 +14,12 @@ use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Validation\Rules\Password;
 
-class UserResource extends Resource
+class ProductResource extends Resource
 {
     use FilamentHelper;
 
-    protected static ?string $model = User::class;
+    protected static ?string $model = Product::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
@@ -31,19 +31,19 @@ class UserResource extends Resource
                     ->label(__('common.name'))
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('email')
-                    ->label(__('common.email'))
+                Forms\Components\Select::make('category_id')
+                    ->label(__('common.category'))
+                    ->relationship('category', 'name')
+                    ->required(),
+                Forms\Components\TextInput::make('selling_price')
+                    ->label(__('common.selling_price'))
                     ->required()
-                    ->email()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('password')
-                    ->label(__('common.password'))
-                    ->password()
-                    ->rule(Password::default()) // Optional: Add strong password rules
-                    ->required(fn(string $context): bool => $context === 'create') // Required on create page
-                    ->dehydrated(fn($state) => filled($state)) // Only save to DB if field is filled
-                    ->dehydrateStateUsing(fn($state) => bcrypt($state)) // Hash the password
-                    ->maxLength(255)
+                    ->numeric()
+                    ->minValue(0),
+                Forms\Components\Select::make('status')
+                    ->label(__('common.status'))
+                    ->required()
+                    ->options(RECORD_STATUS_LABELS),
             ]);
     }
 
@@ -55,8 +55,20 @@ class UserResource extends Resource
                     ->label(__('common.name'))
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('email')
-                    ->label(__('common.email'))
+                Tables\Columns\BadgeColumn::make('category.name')
+                    ->label(__('common.category'))
+                    ->sortable()
+                    ->searchable()
+                    ->color(HIGHLIGHT_LEVEL_PRIMARY),
+                Tables\Columns\BadgeColumn::make('status')
+                    ->label(__('common.status'))
+                    ->sortable()
+                    ->searchable()
+                    ->color(fn(string $state): string => RECORD_STATUS_COLORS[$state] ?? $state)
+                    ->formatStateUsing(fn(string $state): string => RECORD_STATUS_LABELS[$state] ?? $state),
+                Tables\Columns\TextColumn::make('selling_price')
+                    ->label(__('common.selling_price'))
+                    ->money('vnd')
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -85,15 +97,16 @@ class UserResource extends Resource
     {
         return [
             //
+            ProductIngredientsRelationManager::class,
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListUsers::route('/'),
-            'create' => Pages\CreateUser::route('/create'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
+            'index' => Pages\ListProducts::route('/'),
+            'create' => Pages\CreateProduct::route('/create'),
+            'edit' => Pages\EditProduct::route('/{record}/edit'),
         ];
     }
 }

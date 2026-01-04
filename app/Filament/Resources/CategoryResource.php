@@ -2,24 +2,21 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
-use App\Models\User;
+use App\Filament\Resources\CategoryResource\Pages;
+use App\Filament\Resources\CategoryResource\RelationManagers;
+use App\Models\Category;
 use App\Traits\FilamentHelper;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Validation\Rules\Password;
 
-class UserResource extends Resource
+class CategoryResource extends Resource
 {
     use FilamentHelper;
 
-    protected static ?string $model = User::class;
+    protected static ?string $model = Category::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
@@ -31,19 +28,10 @@ class UserResource extends Resource
                     ->label(__('common.name'))
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('email')
-                    ->label(__('common.email'))
+                Forms\Components\Select::make('status')
+                    ->label(__('common.status'))
                     ->required()
-                    ->email()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('password')
-                    ->label(__('common.password'))
-                    ->password()
-                    ->rule(Password::default()) // Optional: Add strong password rules
-                    ->required(fn(string $context): bool => $context === 'create') // Required on create page
-                    ->dehydrated(fn($state) => filled($state)) // Only save to DB if field is filled
-                    ->dehydrateStateUsing(fn($state) => bcrypt($state)) // Hash the password
-                    ->maxLength(255)
+                    ->options(RECORD_STATUS_LABELS),
             ]);
     }
 
@@ -55,10 +43,12 @@ class UserResource extends Resource
                     ->label(__('common.name'))
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('email')
-                    ->label(__('common.email'))
+                Tables\Columns\BadgeColumn::make('status')
+                    ->label(__('common.status'))
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->color(fn(string $state): string => RECORD_STATUS_COLORS[$state] ?? $state)
+                    ->formatStateUsing(fn(string $state): string => RECORD_STATUS_LABELS[$state] ?? $state),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label(__('common.created_at'))
                     ->dateTime('Y-m-d H:i:s')
@@ -91,9 +81,9 @@ class UserResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListUsers::route('/'),
-            'create' => Pages\CreateUser::route('/create'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
+            'index' => Pages\ListCategories::route('/'),
+            'create' => Pages\CreateCategory::route('/create'),
+            'edit' => Pages\EditCategory::route('/{record}/edit'),
         ];
     }
 }
