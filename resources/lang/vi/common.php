@@ -20,6 +20,7 @@ return [
     'order' => 'Đơn hàng',
     'order_item' => 'Mục đơn hàng',
     'productingredient' => 'Công thức sản phẩm',
+    'shift' => 'Ca làm việc',
 
     // field|column
     'name' => 'Tên',
@@ -38,4 +39,6 @@ return [
     'order_code' => 'Mã đơn hàng',
     'total_amount' => 'Tổng tiền',
     'inventory_comsumed_at' => 'Thời gian tiêu thụ kho',
+    'start_time' => 'Thời gian bắt đầu',
+    'end_time' => 'Thời gian kết thúc',
 ];
