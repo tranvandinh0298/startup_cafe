@@ -44,6 +44,10 @@ class EmployeeResource extends Resource
                     ->required()
                     ->numeric()
                     ->maxLength(255),
+                Forms\Components\Select::make('status')
+                    ->label(__('common.status'))
+                    ->required()
+                    ->options(RECORD_STATUS_LABELS),
             ]);
     }
 

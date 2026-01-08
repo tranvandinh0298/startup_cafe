@@ -21,6 +21,8 @@ return [
     'order_item' => 'Mục đơn hàng',
     'productingredient' => 'Công thức sản phẩm',
     'shift' => 'Ca làm việc',
+    'employee' => 'Nhân viên',
+    'schedule' => 'Lịch làm việc',
 
     // field|column
     'name' => 'Tên',
@@ -41,5 +43,9 @@ return [
     'inventory_comsumed_at' => 'Thời gian tiêu thụ kho',
     'start_time' => 'Thời gian bắt đầu',
     'end_time' => 'Thời gian kết thúc',
-    'hourly_rate' => 'Lương theo giờ'
+    'hourly_rate' => 'Lương theo giờ',
+    'phone' => 'Số điện thoại',
+    'role' => 'Vai trò',
+    'work_date' => 'Ngày làm việc',
+
 ];

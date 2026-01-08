@@ -38,6 +38,10 @@ class ShiftResource extends Resource
                     ->label(__('common.start_time'))
                     ->required()
                     ->maxLength(255),
+                Forms\Components\Select::make('status')
+                    ->label(__('common.status'))
+                    ->required()
+                    ->options(RECORD_STATUS_LABELS),
             ]);
     }
 

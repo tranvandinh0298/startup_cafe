@@ -25,6 +25,7 @@ class CreateSchedulesTable extends Migration
             $table->date('work_date');
             $table->enum('status', SCHEDULE_STATUSS)->default(SCHEDULE_STATUS_SCHEDULED);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

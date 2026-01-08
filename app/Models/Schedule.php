@@ -10,9 +10,9 @@ class Schedule extends Model
 {
     use HasFactory, SoftDeletes;
 
-    public function attendances()
+    public function shift()
     {
-        return $this->hasMany(Attendance::class);
+        return $this->belongsTo(Shift::class);
     }
 
     public function employee()

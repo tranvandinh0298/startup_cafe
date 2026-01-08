@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ScheduleResource\Pages;
 use App\Filament\Resources\ScheduleResource\RelationManagers;
 use App\Models\Schedule;
+use App\Traits\FilamentHelper;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -15,6 +16,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ScheduleResource extends Resource
 {
+    use FilamentHelper;
+
     protected static ?string $model = Schedule::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
@@ -23,7 +26,17 @@ class ScheduleResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\Select::make('employee_id')
+                    ->label(__('common.employee'))
+                    ->relationship('employee', 'name')
+                    ->required(),
+                Forms\Components\Select::make('shift_id')
+                    ->label(__('common.shift'))
+                    ->relationship('shift', 'name')
+                    ->required(),
+                Forms\Components\DatePicker::make('work_date')
+                    ->label(__('common.work_date'))
+                    ->required(),
             ]);
     }
 
@@ -43,14 +56,14 @@ class ScheduleResource extends Resource
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -58,5 +71,5 @@ class ScheduleResource extends Resource
             'create' => Pages\CreateSchedule::route('/create'),
             'edit' => Pages\EditSchedule::route('/{record}/edit'),
         ];
-    }    
+    }
 }
