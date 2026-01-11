@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>startup_cafe POS — Payment</title>
+
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body>
+    <div class="page">
+        <div class="payment">
+
+            <!-- LEFT -->
+            <section class="panel methods">
+                <div>
+                    <h1>Payment</h1>
+                    <div class="sub">Order ORD-20260110-0001</div>
+                </div>
+
+                <div class="method-tabs">
+                    <button class="method is-active">CASH</button>
+                    <button class="method">QR</button>
+                </div>
+
+                <!-- CASH PANEL -->
+                <div class="cash">
+                    <div class="amount">
+                        <label>Total</label>
+                        <input type="text" value="120,000" disabled />
+                    </div>
+
+                    <div class="amount">
+                        <label>Customer pays</label>
+                        <input type="text" placeholder="Enter amount…" />
+                    </div>
+
+                    <div class="change positive">
+                        <span>Change</span>
+                        <span>10,000</span>
+                    </div>
+                </div>
+
+                <!-- QR PANEL -->
+                <div class="qr">
+                    <div class="qr-box">QR</div>
+                    <div class="qr-status">Waiting for payment…</div>
+                </div>
+            </section>
+
+            <!-- RIGHT -->
+            <aside class="panel summary">
+                <h1>Summary</h1>
+
+                <div class="sum-box">
+                    <div class="row">
+                        <span>Subtotal</span>
+                        <span>120,000</span>
+                    </div>
+                    <div class="row">
+                        <span>Discount</span>
+                        <span>0</span>
+                    </div>
+                    <div class="row total">
+                        <span>Total</span>
+                        <span>120,000</span>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button class="btn btn--danger btn--pay">Back</button>
+                    <button class="btn btn--primary btn--pay">Confirm Payment</button>
+                </div>
+            </aside>
+
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>startup_cafe POS — Result</title>
+
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body>
+    <div class="page">
+
+        <!-- =========================
+       SUCCESS STATE
+       ========================= -->
+        <div class="result">
+            <div class="icon success">✓</div>
+
+            <div>
+                <h1>Payment Successful</h1>
+                <div class="subtitle">
+                    The order has been completed successfully.
+                </div>
+            </div>
+
+            <div class="meta">
+                <div class="row">
+                    <span>Order Code</span>
+                    <span>ORD-20260110-0001</span>
+                </div>
+                <div class="row">
+                    <span>Payment Method</span>
+                    <span>Cash</span>
+                </div>
+                <div class="row">
+                    <span>Total</span>
+                    <span>120,000</span>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button class="btn btn--ghost btn--pay">View Order</button>
+                <button class="btn btn--primary btn--pay">New Order</button>
+            </div>
+        </div>
+
+        <!-- =========================
+       PENDING STATE (QR)
+       ========================= -->
+        <!--
+  <div class="result">
+    <div class="icon pending">…</div>
+
+    <div>
+      <h1>Waiting for Payment</h1>
+      <div class="subtitle">
+        Please wait while we confirm the QR payment.
+      </div>
+    </div>
+
+    <div class="meta">
+      <div class="row">
+        <span>Order Code</span>
+        <span>ORD-20260110-0002</span>
+      </div>
+      <div class="row">
+        <span>Method</span>
+        <span>QR</span>
+      </div>
+      <div class="row">
+        <span>Status</span>
+        <span>Pending</span>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn--ghost">Back</button>
+      <button class="btn btn--primary">Retry Check</button>
+    </div>
+  </div>
+  -->
+
+        <!-- =========================
+       FAILED STATE
+       ========================= -->
+        <!--
+  <div class="result">
+    <div class="icon failed">×</div>
+
+    <div>
+      <h1>Payment Failed</h1>
+      <div class="subtitle">
+        The payment could not be completed. Please try again.
+      </div>
+    </div>
+
+    <div class="meta">
+      <div class="row">
+        <span>Order Code</span>
+        <span>ORD-20260110-0003</span>
+      </div>
+      <div class="row">
+        <span>Reason</span>
+        <span>Insufficient funds</span>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn--ghost">Back</button>
+      <button class="btn btn--primary">Retry Payment</button>
+    </div>
+  </div>
+  -->
+
+    </div>
+</body>
+
+</html>

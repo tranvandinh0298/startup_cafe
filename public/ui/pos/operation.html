@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>startup_cafe — Inventory Operation</title>
+
+    <style>
+        :root {
+            --bg: #0b0f14;
+            --panel: #101722;
+            --muted: #91a4b7;
+            --text: #e7eef7;
+            --line: rgba(255, 255, 255, .08);
+
+            --primary: #4f8cff;
+            --success: #38d07f;
+            --warning: #ffcc66;
+            --danger: #ff5c7a;
+
+            --r-lg: 18px;
+            --r-md: 12px;
+            --shadow: 0 12px 36px rgba(0, 0, 0, .4);
+            --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto;
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            height: 100%
+        }
+
+        body {
+            margin: 0;
+            font-family: var(--font);
+            background: radial-gradient(900px 500px at 50% -10%, rgba(79, 140, 255, .15), transparent 60%), var(--bg);
+            color: var(--text);
+        }
+
+        .page {
+            min-height: 100%;
+            padding: 32px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .inventory {
+            width: 100%;
+            max-width: 1100px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .header .sub {
+            color: var(--muted);
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            height: 46px;
+            padding: 0 18px;
+            border-radius: var(--r-md);
+            border: 1px solid var(--line);
+            background: rgba(18, 27, 39, .65);
+            color: var(--text);
+            font-weight: 900;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: rgba(18, 27, 39, .85)
+        }
+
+        .btn--primary {
+            background: linear-gradient(135deg, rgba(79, 140, 255, .95), rgba(79, 140, 255, .7));
+            border-color: rgba(79, 140, 255, .5);
+        }
+
+        .btn--danger {
+            background: rgba(255, 92, 122, .12);
+            border-color: rgba(255, 92, 122, .35);
+            color: rgba(255, 92, 122, .95);
+        }
+
+        .panel {
+            border: 1px solid var(--line);
+            border-radius: var(--r-lg);
+            background: rgba(16, 23, 34, .78);
+            box-shadow: var(--shadow);
+            padding: 20px;
+        }
+
+        .table {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr auto;
+            gap: 12px;
+            align-items: center;
+            font-weight: 800;
+        }
+
+        .row.header {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .badge {
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 900;
+            border: 1px solid;
+        }
+
+        .badge.ok {
+            color: var(--success);
+            border-color: rgba(56, 208, 127, .4)
+        }
+
+        .badge.low {
+            color: var(--warning);
+            border-color: rgba(255, 204, 102, .4)
+        }
+
+        .badge.out {
+            color: var(--danger);
+            border-color: rgba(255, 92, 122, .4)
+        }
+
+        .small-btn {
+            height: 36px;
+            padding: 0 14px;
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            background: rgba(18, 27, 39, .6);
+            font-weight: 900;
+            cursor: pointer;
+        }
+
+        .small-btn.primary {
+            border-color: rgba(79, 140, 255, .5);
+            color: var(--primary)
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page">
+        <div class="inventory">
+
+            <div class="header">
+                <div>
+                    <h1>Inventory Operation</h1>
+                    <div class="sub">Today • 10 Jan 2026</div>
+                </div>
+                <div class="actions">
+                    <button class="btn btn--danger">Close Inventory</button>
+                    <button class="btn btn--primary">Open Inventory</button>
+                </div>
+            </div>
+
+            <div class="panel table">
+                <div class="row header">
+                    <span>Ingredient</span>
+                    <span>Available</span>
+                    <span>Unit</span>
+                    <span>Status</span>
+                    <span></span>
+                </div>
+
+                <div class="row">
+                    <span>Fresh Milk</span>
+                    <span>12</span>
+                    <span>Box</span>
+                    <span><span class="badge ok">OK</span></span>
+                    <button class="small-btn primary">Open Batch</button>
+                </div>
+
+                <div class="row">
+                    <span>Coffee Bean</span>
+                    <span>1.2</span>
+                    <span>Kg</span>
+                    <span><span class="badge low">Low</span></span>
+                    <button class="small-btn primary">Open Batch</button>
+                </div>
+
+                <div class="row">
+                    <span>Peach Syrup</span>
+                    <span>0</span>
+                    <span>Bottle</span>
+                    <span><span class="badge out">Out</span></span>
+                    <button class="small-btn">Unavailable</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>
