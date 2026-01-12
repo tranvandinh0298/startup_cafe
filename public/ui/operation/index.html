@@ -1,322 +1,329 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>startup_cafe — Operation Dashboard</title>
 
-<head>
-    <meta charset="utf-8" />
-    <title>startup_cafe — Operation Dashboard</title>
+        <style>
+            :root {
+                --bg: #0b0f14;
+                --panel: #101722;
+                --card: #121b27;
+                --muted: #91a4b7;
+                --text: #e7eef7;
+                --line: rgba(255, 255, 255, 0.08);
 
-    <style>
-        :root {
-            --bg: #0b0f14;
-            --panel: #101722;
-            --card: #121b27;
-            --muted: #91a4b7;
-            --text: #e7eef7;
-            --line: rgba(255, 255, 255, .08);
+                --primary: #4f8cff;
+                --success: #38d07f;
+                --warning: #ffcc66;
+                --danger: #ff5c7a;
 
-            --primary: #4f8cff;
-            --success: #38d07f;
-            --warning: #ffcc66;
-            --danger: #ff5c7a;
+                --r-lg: 18px;
+                --r-md: 12px;
+                --gap: 20px;
 
-            --r-lg: 18px;
-            --r-md: 12px;
-            --gap: 20px;
+                --shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
+                --font: ui-sans-serif, system-ui, -apple-system, Segoe UI,
+                    Roboto;
+            }
 
-            --shadow: 0 12px 36px rgba(0, 0, 0, .45);
-            --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto;
-        }
+            * {
+                box-sizing: border-box;
+            }
 
-        * {
-            box-sizing: border-box
-        }
+            html,
+            body {
+                height: 100%;
+            }
 
-        html,
-        body {
-            height: 100%
-        }
+            body {
+                margin: 0;
+                font-family: var(--font);
+                background: radial-gradient(
+                        900px 500px at 50% -10%,
+                        rgba(79, 140, 255, 0.15),
+                        transparent 60%
+                    ),
+                    var(--bg);
+                color: var(--text);
+            }
 
-        body {
-            margin: 0;
-            font-family: var(--font);
-            background: radial-gradient(900px 500px at 50% -10%, rgba(79, 140, 255, .15), transparent 60%), var(--bg);
-            color: var(--text);
-        }
+            .page {
+                min-height: 100%;
+                padding: 32px;
+            }
 
-        .page {
-            min-height: 100%;
-            padding: 32px;
-        }
+            .header {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-end;
+                margin-bottom: 28px;
+            }
 
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            margin-bottom: 28px;
-        }
+            .header h1 {
+                margin: 0;
+                font-size: 26px;
+            }
 
-        .header h1 {
-            margin: 0;
-            font-size: 26px;
-        }
+            .header .sub {
+                color: var(--muted);
+                font-weight: 600;
+                font-size: 14px;
+            }
 
-        .header .sub {
-            color: var(--muted);
-            font-weight: 600;
-            font-size: 14px;
-        }
+            .time {
+                font-size: 20px;
+                font-weight: 900;
+                letter-spacing: 0.5px;
+            }
 
-        .time {
-            font-size: 20px;
-            font-weight: 900;
-            letter-spacing: .5px;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: var(--gap);
-        }
-
-        /* STATUS CARDS */
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: var(--gap);
-        }
-
-        .card {
-            background: rgba(16, 23, 34, .78);
-            border: 1px solid var(--line);
-            border-radius: var(--r-lg);
-            padding: 20px;
-            box-shadow: var(--shadow);
-        }
-
-        .card h3 {
-            margin: 0 0 8px;
-            font-size: 16px;
-        }
-
-        .card .value {
-            font-size: 32px;
-            font-weight: 900;
-        }
-
-        .card .hint {
-            color: var(--muted);
-            font-weight: 600;
-            font-size: 13px;
-            margin-top: 6px;
-        }
-
-        .card.staff .value {
-            color: var(--primary)
-        }
-
-        .card.inventory .value {
-            color: var(--warning)
-        }
-
-        .card.orders .value {
-            color: var(--success)
-        }
-
-        /* QUICK ACTIONS */
-        .actions {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
-
-        .btn {
-            height: 56px;
-            border-radius: var(--r-md);
-            border: 1px solid var(--line);
-            background: rgba(18, 27, 39, .65);
-            color: var(--text);
-            font-weight: 900;
-            font-size: 15px;
-            cursor: pointer;
-        }
-
-        .btn:hover {
-            background: rgba(18, 27, 39, .85)
-        }
-
-        .btn.primary {
-            background: linear-gradient(135deg, rgba(79, 140, 255, .95), rgba(79, 140, 255, .7));
-            border-color: rgba(79, 140, 255, .5);
-        }
-
-        .btn.warning {
-            background: rgba(255, 204, 102, .12);
-            border-color: rgba(255, 204, 102, .35);
-            color: rgba(255, 204, 102, .95);
-        }
-
-        .btn.danger {
-            background: rgba(255, 92, 122, .12);
-            border-color: rgba(255, 92, 122, .35);
-            color: rgba(255, 92, 122, .95);
-        }
-
-        /* LIVE PANELS */
-        .live {
-            grid-column: 1 / -1;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: var(--gap);
-        }
-
-        .panel {
-            background: rgba(16, 23, 34, .78);
-            border: 1px solid var(--line);
-            border-radius: var(--r-lg);
-            padding: 20px;
-            box-shadow: var(--shadow);
-        }
-
-        .panel h3 {
-            margin: 0 0 12px;
-            font-size: 16px;
-        }
-
-        .list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .item {
-            display: flex;
-            justify-content: space-between;
-            font-weight: 800;
-        }
-
-        .badge {
-            padding: 6px 12px;
-            border-radius: 999px;
-            font-size: 12px;
-            font-weight: 900;
-            border: 1px solid;
-        }
-
-        .badge.ok {
-            color: var(--success);
-            border-color: rgba(56, 208, 127, .4)
-        }
-
-        .badge.low {
-            color: var(--warning);
-            border-color: rgba(255, 204, 102, .4)
-        }
-
-        .badge.out {
-            color: var(--danger);
-            border-color: rgba(255, 92, 122, .4)
-        }
-
-        @media(max-width:1000px) {
             .grid {
-                grid-template-columns: 1fr
+                display: grid;
+                grid-template-columns: 2fr 1fr;
+                gap: var(--gap);
             }
 
+            /* STATUS CARDS */
             .cards {
-                grid-template-columns: 1fr
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: var(--gap);
             }
 
+            .card {
+                background: rgba(16, 23, 34, 0.78);
+                border: 1px solid var(--line);
+                border-radius: var(--r-lg);
+                padding: 20px;
+                box-shadow: var(--shadow);
+            }
+
+            .card h3 {
+                margin: 0 0 8px;
+                font-size: 16px;
+            }
+
+            .card .value {
+                font-size: 32px;
+                font-weight: 900;
+            }
+
+            .card .hint {
+                color: var(--muted);
+                font-weight: 600;
+                font-size: 13px;
+                margin-top: 6px;
+            }
+
+            .card.staff .value {
+                color: var(--primary);
+            }
+
+            .card.inventory .value {
+                color: var(--warning);
+            }
+
+            .card.orders .value {
+                color: var(--success);
+            }
+
+            /* QUICK ACTIONS */
+            .actions {
+                display: flex;
+                flex-direction: column;
+                gap: 14px;
+            }
+
+            .btn {
+                height: 56px;
+                border-radius: var(--r-md);
+                border: 1px solid var(--line);
+                background: rgba(18, 27, 39, 0.65);
+                color: var(--text);
+                font-weight: 900;
+                font-size: 15px;
+                cursor: pointer;
+            }
+
+            .btn:hover {
+                background: rgba(18, 27, 39, 0.85);
+            }
+
+            .btn.primary {
+                background: linear-gradient(
+                    135deg,
+                    rgba(79, 140, 255, 0.95),
+                    rgba(79, 140, 255, 0.7)
+                );
+                border-color: rgba(79, 140, 255, 0.5);
+            }
+
+            .btn.warning {
+                background: rgba(255, 204, 102, 0.12);
+                border-color: rgba(255, 204, 102, 0.35);
+                color: rgba(255, 204, 102, 0.95);
+            }
+
+            .btn.danger {
+                background: rgba(255, 92, 122, 0.12);
+                border-color: rgba(255, 92, 122, 0.35);
+                color: rgba(255, 92, 122, 0.95);
+            }
+
+            /* LIVE PANELS */
             .live {
-                grid-template-columns: 1fr
+                grid-column: 1 / -1;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: var(--gap);
             }
-        }
-    </style>
-</head>
 
-<body>
-    <div class="page">
+            .panel {
+                background: rgba(16, 23, 34, 0.78);
+                border: 1px solid var(--line);
+                border-radius: var(--r-lg);
+                padding: 20px;
+                box-shadow: var(--shadow);
+            }
 
-        <!-- HEADER -->
-        <div class="header">
-            <div>
-                <h1>Operation Dashboard</h1>
-                <div class="sub">Today • Morning Shift • 10 Jan 2026</div>
-            </div>
-            <div class="time">10:42</div>
-        </div>
+            .panel h3 {
+                margin: 0 0 12px;
+                font-size: 16px;
+            }
 
-        <div class="grid">
+            .list {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
 
-            <!-- STATUS CARDS -->
-            <div class="cards">
-                <div class="card staff">
-                    <h3>Staff on Duty</h3>
-                    <div class="value">3 / 5</div>
-                    <div class="hint">Checked-in</div>
+            .item {
+                display: flex;
+                justify-content: space-between;
+                font-weight: 800;
+            }
+
+            .badge {
+                padding: 6px 12px;
+                border-radius: 999px;
+                font-size: 12px;
+                font-weight: 900;
+                border: 1px solid;
+            }
+
+            .badge.ok {
+                color: var(--success);
+                border-color: rgba(56, 208, 127, 0.4);
+            }
+
+            .badge.low {
+                color: var(--warning);
+                border-color: rgba(255, 204, 102, 0.4);
+            }
+
+            .badge.out {
+                color: var(--danger);
+                border-color: rgba(255, 92, 122, 0.4);
+            }
+
+            @media (max-width: 1000px) {
+                .grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .cards {
+                    grid-template-columns: 1fr;
+                }
+
+                .live {
+                    grid-template-columns: 1fr;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="page">
+            <!-- HEADER -->
+            <div class="header">
+                <div>
+                    <h1>Operation Dashboard</h1>
+                    <div class="sub">Today • Morning Shift • 10 Jan 2026</div>
                 </div>
-
-                <div class="card inventory">
-                    <h3>Inventory Status</h3>
-                    <div class="value">Attention</div>
-                    <div class="hint">2 ingredients low</div>
-                </div>
-
-                <div class="card orders">
-                    <h3>Orders Today</h3>
-                    <div class="value">48</div>
-                    <div class="hint">12 pending</div>
-                </div>
+                <div class="time">10:42</div>
             </div>
 
-            <!-- QUICK ACTIONS -->
-            <div class="actions">
-                <button class="btn primary">Staff Check-in / Check-out</button>
-                <button class="btn warning">Inventory Operation</button>
-                <button class="btn">Go to POS</button>
-                <button class="btn danger">Close Day</button>
-            </div>
+            <div class="grid">
+                <!-- STATUS CARDS -->
+                <div class="cards">
+                    <div class="card staff">
+                        <h3>Staff on Duty</h3>
+                        <div class="value">3 / 5</div>
+                        <div class="hint">Checked-in</div>
+                    </div>
 
-            <!-- LIVE PANELS -->
-            <div class="live">
-                <div class="panel">
-                    <h3>Staff Currently Working</h3>
-                    <div class="list">
-                        <div class="item">
-                            <span>Nguyen Van A</span>
-                            <span class="badge ok">On duty</span>
-                        </div>
-                        <div class="item">
-                            <span>Tran Thi B</span>
-                            <span class="badge ok">On duty</span>
-                        </div>
-                        <div class="item">
-                            <span>Le Van C</span>
-                            <span class="badge ok">On duty</span>
-                        </div>
+                    <div class="card inventory">
+                        <h3>Inventory Status</h3>
+                        <div class="value">Attention</div>
+                        <div class="hint">2 ingredients low</div>
+                    </div>
+
+                    <div class="card orders">
+                        <h3>Orders Today</h3>
+                        <div class="value">48</div>
+                        <div class="hint">12 pending</div>
                     </div>
                 </div>
 
-                <div class="panel">
-                    <h3>Inventory Attention</h3>
-                    <div class="list">
-                        <div class="item">
-                            <span>Fresh Milk</span>
-                            <span class="badge low">Low</span>
+                <!-- QUICK ACTIONS -->
+                <div class="actions">
+                    <button class="btn primary">
+                        Staff Check-in / Check-out
+                    </button>
+                    <button class="btn warning">Inventory Operation</button>
+                    <button class="btn">Go to POS</button>
+                    <button class="btn danger">Close Day</button>
+                </div>
+
+                <!-- LIVE PANELS -->
+                <div class="live">
+                    <div class="panel">
+                        <h3>Staff Currently Working</h3>
+                        <div class="list">
+                            <div class="item">
+                                <span>Nguyen Van A</span>
+                                <span class="badge ok">On duty</span>
+                            </div>
+                            <div class="item">
+                                <span>Tran Thi B</span>
+                                <span class="badge ok">On duty</span>
+                            </div>
+                            <div class="item">
+                                <span>Le Van C</span>
+                                <span class="badge ok">On duty</span>
+                            </div>
                         </div>
-                        <div class="item">
-                            <span>Coffee Bean</span>
-                            <span class="badge low">Low</span>
-                        </div>
-                        <div class="item">
-                            <span>Peach Syrup</span>
-                            <span class="badge out">Out</span>
+                    </div>
+
+                    <div class="panel">
+                        <h3>Inventory Attention</h3>
+                        <div class="list">
+                            <div class="item">
+                                <span>Fresh Milk</span>
+                                <span class="badge low">Low</span>
+                            </div>
+                            <div class="item">
+                                <span>Coffee Bean</span>
+                                <span class="badge low">Low</span>
+                            </div>
+                            <div class="item">
+                                <span>Peach Syrup</span>
+                                <span class="badge out">Out</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
-    </div>
-</body>
-
+    </body>
 </html>

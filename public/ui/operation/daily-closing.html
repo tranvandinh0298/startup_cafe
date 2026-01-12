@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>startup_cafe — Daily Closing</title>
+
+        <style>
+            :root {
+                --bg: #0b0f14;
+                --panel: #101722;
+                --muted: #91a4b7;
+                --text: #e7eef7;
+                --line: rgba(255, 255, 255, 0.08);
+
+                --primary: #4f8cff;
+                --success: #38d07f;
+                --warning: #ffcc66;
+                --danger: #ff5c7a;
+
+                --r-lg: 18px;
+                --r-md: 12px;
+                --gap: 20px;
+
+                --shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
+                --font: ui-sans-serif, system-ui, -apple-system, Segoe UI,
+                    Roboto;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+            html,
+            body {
+                height: 100%;
+            }
+            body {
+                margin: 0;
+                font-family: var(--font);
+                background: radial-gradient(
+                        900px 500px at 50% -10%,
+                        rgba(79, 140, 255, 0.15),
+                        transparent 60%
+                    ),
+                    var(--bg);
+                color: var(--text);
+            }
+
+            .page {
+                min-height: 100%;
+                padding: 32px;
+                display: flex;
+                justify-content: center;
+            }
+
+            .wrap {
+                width: 100%;
+                max-width: 900px;
+                display: flex;
+                flex-direction: column;
+                gap: 28px;
+            }
+
+            /* HEADER */
+            .header {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-end;
+            }
+            .header h1 {
+                margin: 0;
+                font-size: 26px;
+            }
+            .header .sub {
+                color: var(--muted);
+                font-weight: 600;
+                font-size: 14px;
+            }
+
+            .status {
+                padding: 8px 14px;
+                border-radius: 999px;
+                font-weight: 900;
+                border: 1px solid;
+            }
+            .status.ready {
+                color: var(--success);
+                border-color: rgba(56, 208, 127, 0.4);
+            }
+            .status.blocked {
+                color: var(--warning);
+                border-color: rgba(255, 204, 102, 0.4);
+            }
+
+            /* PANEL */
+            .panel {
+                background: rgba(16, 23, 34, 0.78);
+                border: 1px solid var(--line);
+                border-radius: var(--r-lg);
+                box-shadow: var(--shadow);
+                padding: 22px;
+                display: flex;
+                flex-direction: column;
+                gap: 18px;
+            }
+
+            .panel h2 {
+                margin: 0;
+                font-size: 18px;
+            }
+
+            /* CHECKLIST */
+            .checklist {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+            }
+            .check {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 12px 14px;
+                border-radius: var(--r-md);
+                border: 1px solid var(--line);
+                background: rgba(18, 27, 39, 0.55);
+                font-weight: 800;
+            }
+            .check.ok {
+                border-color: rgba(56, 208, 127, 0.35);
+            }
+            .check.warn {
+                border-color: rgba(255, 204, 102, 0.35);
+            }
+
+            .badge {
+                padding: 6px 12px;
+                border-radius: 999px;
+                font-size: 12px;
+                font-weight: 900;
+                border: 1px solid;
+            }
+            .badge.ok {
+                color: var(--success);
+                border-color: rgba(56, 208, 127, 0.4);
+            }
+            .badge.warn {
+                color: var(--warning);
+                border-color: rgba(255, 204, 102, 0.4);
+            }
+
+            /* SUMMARY */
+            .summary {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 14px;
+            }
+            .box {
+                border: 1px solid var(--line);
+                border-radius: var(--r-md);
+                background: rgba(18, 27, 39, 0.55);
+                padding: 14px;
+            }
+            .box h3 {
+                margin: 0 0 10px;
+                font-size: 14px;
+            }
+            .row {
+                display: flex;
+                justify-content: space-between;
+                font-weight: 800;
+                font-size: 13px;
+                color: var(--muted);
+            }
+            .row b {
+                color: var(--text);
+            }
+
+            /* ACTIONS */
+            .actions {
+                display: flex;
+                justify-content: flex-end;
+                gap: 12px;
+            }
+            .btn {
+                height: 48px;
+                padding: 0 18px;
+                border-radius: var(--r-md);
+                border: 1px solid var(--line);
+                background: rgba(18, 27, 39, 0.65);
+                color: var(--text);
+                font-weight: 900;
+                cursor: pointer;
+            }
+            .btn:hover {
+                background: rgba(18, 27, 39, 0.85);
+            }
+
+            .btn.primary {
+                background: linear-gradient(
+                    135deg,
+                    rgba(79, 140, 255, 0.95),
+                    rgba(79, 140, 255, 0.7)
+                );
+                border-color: rgba(79, 140, 255, 0.5);
+            }
+            .btn.disabled {
+                opacity: 0.45;
+                cursor: not-allowed;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="page">
+            <div class="wrap">
+                <!-- HEADER -->
+                <div class="header">
+                    <div>
+                        <h1>Daily Closing</h1>
+                        <div class="sub">10 Jan 2026 • Morning Shift</div>
+                    </div>
+                    <span class="status blocked">Blocked</span>
+                </div>
+
+                <!-- CHECKLIST -->
+                <div class="panel">
+                    <h2>Closing Checklist</h2>
+
+                    <div class="checklist">
+                        <div class="check ok">
+                            <span>All staff checked out</span>
+                            <span class="badge ok">OK</span>
+                        </div>
+
+                        <div class="check warn">
+                            <span>No pending orders</span>
+                            <span class="badge warn">2 Pending</span>
+                        </div>
+
+                        <div class="check ok">
+                            <span>Inventory ready to close</span>
+                            <span class="badge ok">Ready</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUMMARY -->
+                <div class="panel">
+                    <h2>Daily Summary</h2>
+
+                    <div class="summary">
+                        <div class="box">
+                            <h3>Orders</h3>
+                            <div class="row">
+                                <span>Total orders</span><b>48</b>
+                            </div>
+                            <div class="row">
+                                <span>Cash</span><b>3,200,000</b>
+                            </div>
+                            <div class="row">
+                                <span>QR</span><b>2,150,000</b>
+                            </div>
+                        </div>
+
+                        <div class="box">
+                            <h3>Inventory</h3>
+                            <div class="row">
+                                <span>Ingredients consumed</span><b>18</b>
+                            </div>
+                            <div class="row">
+                                <span>Low items</span><b>2</b>
+                            </div>
+                            <div class="row">
+                                <span>Out of stock</span><b>1</b>
+                            </div>
+                        </div>
+
+                        <div class="box">
+                            <h3>Staff</h3>
+                            <div class="row">
+                                <span>On duty today</span><b>5</b>
+                            </div>
+                            <div class="row">
+                                <span>Total hours</span><b>38.5</b>
+                            </div>
+                        </div>
+
+                        <div class="box">
+                            <h3>System</h3>
+                            <div class="row">
+                                <span>Inventory session</span><b>Open</b>
+                            </div>
+                            <div class="row">
+                                <span>POS session</span><b>Active</b>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ACTIONS -->
+                <div class="actions">
+                    <button class="btn">Review Inventory</button>
+                    <button class="btn primary disabled">Close Day</button>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
