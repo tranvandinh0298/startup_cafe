@@ -1,0 +1,17 @@
+@media (max-width: 1000px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cards {
+        grid-template-columns: 1fr;
+    }
+
+    .live {
+        grid-template-columns: 1fr;
+    }
+
+    .ing-details {
+        grid-template-columns: 1fr;
+    }
+}

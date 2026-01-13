@@ -1,0 +1,40 @@
+@media (max-width: 1200px) {
+    .main {
+        grid-template-columns: 1fr 380px;
+    }
+
+    .grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+@media (max-width: 980px) {
+    .topbar__center {
+        display: none;
+    }
+
+    .main {
+        grid-template-columns: 1fr;
+    }
+
+    .grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .payment {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 900px) {
+    .row-actions {
+        justify-content: flex-start;
+    }
+    th:nth-child(4),
+    td:nth-child(4) {
+        display: none;
+    } /* hide items count on small */
+    th:nth-child(6),
+    td:nth-child(6) {
+        display: none;
+    } /* hide created at on small */
+}

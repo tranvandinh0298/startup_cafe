@@ -1,0 +1,62 @@
+:root {
+    --bg: #0b0f14;
+    --panel: #101722;
+    --panel-2: #0f1620;
+    --card: #121b27;
+    --muted: #91a4b7;
+    --text: #e7eef7;
+    --line: rgba(255, 255, 255, 0.08);
+    --accent: #4f8cff; /* primary */
+    --success: #38d07f;
+    --warning: #ffcc66;
+    --danger: #ff5c7a;
+
+    --r-lg: 16px;
+    --r-md: 12px;
+    --r-sm: 10px;
+
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    --shadow-soft: 0 6px 18px rgba(0, 0, 0, 0.25);
+
+    --gap-1: 8px;
+    --gap-2: 12px;
+    --gap-3: 16px;
+    --gap-4: 20px;
+    --gap-5: 24px;
+
+    --h-topbar: 64px;
+    --h-actions: 56px;
+
+    --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica,
+        Arial, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+* {
+    box-sizing: border-box;
+}
+html,
+body {
+    height: 100%;
+}
+body {
+    margin: 0;
+    font-family: var(--font);
+    background: radial-gradient(
+            900px 500px at 15% -10%,
+            rgba(79, 140, 255, 0.18),
+            transparent 60%
+        ),
+        radial-gradient(
+            900px 500px at 85% 0%,
+            rgba(56, 208, 127, 0.1),
+            transparent 60%
+        ),
+        var(--bg);
+    color: var(--text);
+}
+
+.svg {
+    width: 18px;
+    height: 18px;
+    display: inline-block;
+}
