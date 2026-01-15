@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Pos\HomeController;
+use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +15,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+    // return view('welcome', [
+    //     'products' => Product::all()
+    // ]);
+//     return Product::all();
+// });
+
+Route::get('/', [HomeController::class, 'index']);

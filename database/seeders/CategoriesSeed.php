@@ -15,12 +15,12 @@ class CategoriesSeed extends Seeder
     public function run()
     {
         $categories = [
-            ['name' => 'Coffee'],
-            ['name' => 'Tea'],
-            ['name' => 'Milk'],
-            ['name' => 'IceBlended'],
-            ['name' => 'Packaged'],
-            ['name' => 'Bakery'],
+            ['name' => 'Cà phê'],
+            ['name' => 'Trà'],
+            ['name' => 'Sữa'],
+            ['name' => 'Đá xay'],
+            ['name' => 'Đóng gói'],
+            ['name' => 'Bánh ngọt'],
         ];
         foreach ($categories as $data) {
             Category::create($data);

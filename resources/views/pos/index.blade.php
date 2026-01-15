@@ -1,0 +1,228 @@
+@extends('pos.layouts.app')
+
+@section('content')
+    <!-- Topbar -->
+    <header class="topbar">
+        <div class="topbar__left">
+            <div class="brand">
+                <div class="brand__logo" aria-hidden="true"></div>
+                <div class="brand__title">
+                    startup_cafe POS
+                    <small>Desktop • 1 shop</small>
+                </div>
+            </div>
+
+            <div class="pill" title="Session status">
+                <span class="dot" aria-hidden="true"></span>
+                Session: Open
+            </div>
+        </div>
+
+        <div class="topbar__center">
+            <div class="search">
+                <span class="icon" aria-hidden="true">
+                    <svg class="svg" viewBox="0 0 24 24" fill="none">
+                        <path d="M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="currentColor" stroke-width="2" />
+                        <path d="M16.5 16.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    </svg>
+                </span>
+                <input type="text" placeholder="Search product… (name, code)" />
+                <span class="hint">Ctrl K</span>
+            </div>
+        </div>
+
+        <div class="topbar__right">
+            <button class="btn btn--ghost" type="button" title="Open orders">
+                <svg class="svg" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M7 3h10a2 2 0 0 1 2 2v14l-4-2-4 2-4-2-4 2V5a2 2 0 0 1 2-2Z" stroke="currentColor"
+                        stroke-width="2" />
+                </svg>
+                Orders
+            </button>
+
+            <button class="iconbtn" type="button" title="Settings">
+                <svg class="svg" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z" stroke="currentColor" stroke-width="2" />
+                    <path
+                        d="M19.4 15a8 8 0 0 0 .1-1 8 8 0 0 0-.1-1l2-1.5-2-3.5-2.3.7a7.7 7.7 0 0 0-1.7-1L15 3h-6l-.4 2.7a7.7 7.7 0 0 0-1.7 1L4.6 6 2.6 9.5l2 1.5a8 8 0 0 0-.1 1 8 8 0 0 0 .1 1l-2 1.5 2 3.5 2.3-.7a7.7 7.7 0 0 0 1.7 1L9 21h6l.4-2.7a7.7 7.7 0 0 0 1.7-1l2.3.7 2-3.5-2-1.5Z"
+                        stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                </svg>
+            </button>
+
+            <div class="avatar" title="Cashier">
+                <div class="avatar__pic" aria-hidden="true"></div>
+                <div class="avatar__meta">
+                    <b>Cashier</b>
+                    <span>Order: ORD-20260110-0001</span>
+                </div>
+            </div>
+
+            <button class="btn btn--primary" type="button" title="New order">
+                <svg class="svg" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+                New
+            </button>
+        </div>
+    </header>
+
+    <!-- Main -->
+    <main class="main">
+        <!-- Products -->
+        <section class="panel products">
+            <div class="products__toolbar">
+                <div class="tabs" role="tablist" aria-label="Categories">
+                    <button class="tab is-active" type="button">
+                        All
+                    </button>
+
+                    @if (!empty($categories))
+                        @foreach ($categories as $category)
+                            <button class="tab" type="button"
+                                data-index="{{ $category->id }}">{{ $category->name }}</button>
+                        @endforeach
+                    @endif
+                </div>
+
+                <div class="toolbar__right">
+                    <span class="chip">Today: 10 Jan 2026</span>
+                    <span class="chip">Open orders: 3</span>
+                </div>
+            </div>
+
+            <div class="grid" aria-label="Product grid">
+                @if (!empty($products))
+                    @foreach ($products as $item)
+                        <article class="product" tabindex="{{ $item->category->id }}">
+                            <div class="product__name">{{ $item->name }}</div>
+                            <div class="product__meta">
+                                <div class="price">{{ number_format($item->selling_price) }}</div>
+                                <span class="badge badge--ok">In stock</span>
+                            </div>
+                        </article>
+                    @endforeach
+                @endif
+            </div>
+        </section>
+
+        <!-- Cart -->
+        <aside class="panel cart" aria-label="Order cart">
+            <div class="cart__head">
+                <div class="cart__title">
+                    <b>Current Order</b>
+                    <span>ORD-20260110-0001 • Draft</span>
+                </div>
+
+                <div class="cart__tools">
+                    <button class="iconbtn" type="button" title="Customer note">
+                        <svg class="svg" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M4 5h16v11H7l-3 3V5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                            <path d="M7 9h10M7 12h7" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                    </button>
+
+                    <button class="iconbtn" type="button" title="Discount (optional)">
+                        <svg class="svg" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M20 12v6a2 2 0 0 1-2 2H6l-2-2V6a2 2 0 0 1 2-2h6" stroke="currentColor"
+                                stroke-width="2" stroke-linejoin="round" />
+                            <path d="M14 4h6v6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                            <path d="M20 4 12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="cart__body">
+                <!-- Remove this empty state once you render real items -->
+                <!--
+                          <div class="empty">
+                            <b>No items yet</b>
+                            <span>Click a product to add into the cart.</span>
+                          </div>
+                          -->
+
+                <!-- Example items -->
+                <div class="item">
+                    <div class="item__main">
+                        <div class="item__name">Latte</div>
+                        <div class="item__sub">
+                            <span>45,000 × 2</span>
+                            <span><b>90,000</b></span>
+                        </div>
+                    </div>
+
+                    <div class="qty">
+                        <button class="qty__btn" type="button" aria-label="Decrease">
+                            −
+                        </button>
+                        <div class="qty__num" aria-label="Quantity">
+                            2
+                        </div>
+                        <button class="qty__btn" type="button" aria-label="Increase">
+                            +
+                        </button>
+                        <button class="qty__remove" type="button" aria-label="Remove">
+                            ×
+                        </button>
+                    </div>
+                </div>
+
+                <div class="item">
+                    <div class="item__main">
+                        <div class="item__name">Espresso</div>
+                        <div class="item__sub">
+                            <span>30,000 × 1</span>
+                            <span><b>30,000</b></span>
+                        </div>
+                    </div>
+
+                    <div class="qty">
+                        <button class="qty__btn" type="button" aria-label="Decrease">
+                            −
+                        </button>
+                        <div class="qty__num" aria-label="Quantity">
+                            1
+                        </div>
+                        <button class="qty__btn" type="button" aria-label="Increase">
+                            +
+                        </button>
+                        <button class="qty__remove" type="button" aria-label="Remove">
+                            ×
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cart__footer">
+                <div class="sum">
+                    <div class="row">
+                        <span>Subtotal</span>
+                        <b>120,000</b>
+                    </div>
+                    <div class="row">
+                        <span>Discount</span>
+                        <b>0</b>
+                    </div>
+                    <div class="row row--total">
+                        <span>Total</span>
+                        <b>120,000</b>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button class="btn btn--danger btn--pay" type="button">
+                        Cancel
+                    </button>
+                    <button class="btn btn--primary btn--pay" type="button">
+                        Pay
+                    </button>
+                </div>
+            </div>
+        </aside>
+    </main>
+@endsection
+
+
+@push('scripts')
+    <script></script>
+@endpush

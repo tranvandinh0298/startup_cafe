@@ -13,6 +13,15 @@ document.addEventListener("DOMContentLoaded", () => {
                     .forEach((product) => {
                         product.classList.remove("d-none");
                     });
+                document
+                    .querySelectorAll(".tabs[role='tablist'] .tab")
+                    .forEach((tab, index) => {
+                        if (index === 0) {
+                            tab.classList.add("is-active");
+                        } else {
+                            tab.classList.remove("is-active");
+                        }
+                    });
             } else {
                 tab.classList.add("is-active");
                 document
