@@ -93,11 +93,18 @@
             <div class="grid" aria-label="Product grid">
                 @if (!empty($products))
                     @foreach ($products as $item)
-                        <article class="product" tabindex="{{ $item->category->id }}">
+                        <article class="product @if ($item->availability == 0) is-disabled @endif"
+                            tabindex="{{ $item->category->id }}" data-index="{{ $item->id }}">
                             <div class="product__name">{{ $item->name }}</div>
                             <div class="product__meta">
                                 <div class="price">{{ number_format($item->selling_price) }}</div>
-                                <span class="badge badge--ok">In stock</span>
+                                @if ($item->availability > 3)
+                                    <span class="badge badge--ok">Còn hàng</span>
+                                @elseif($item->availability < 3 && $item->availability > 0)
+                                    <span class="badge badge--low">Gần hết</span>
+                                @else
+                                    <span class="badge badge--out">Đã hết</span>
+                                @endif
                             </div>
                         </article>
                     @endforeach
@@ -107,6 +114,8 @@
 
         <!-- Cart -->
         <aside class="panel cart" aria-label="Order cart">
+            <input type="hidden" id="cart-init" value="" />
+            <input type="hidden" name="cart" id="cart-submit" value="" />
             <div class="cart__head">
                 <div class="cart__title">
                     <b>Current Order</b>
@@ -116,7 +125,8 @@
                 <div class="cart__tools">
                     <button class="iconbtn" type="button" title="Customer note">
                         <svg class="svg" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                            <path d="M4 5h16v11H7l-3 3V5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                            <path d="M4 5h16v11H7l-3 3V5Z" stroke="currentColor" stroke-width="2"
+                                stroke-linejoin="round" />
                             <path d="M7 9h10M7 12h7" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
                         </svg>
                     </button>
@@ -135,11 +145,11 @@
             <div class="cart__body">
                 <!-- Remove this empty state once you render real items -->
                 <!--
-                          <div class="empty">
-                            <b>No items yet</b>
-                            <span>Click a product to add into the cart.</span>
-                          </div>
-                          -->
+                                                          <div class="empty">
+                                                            <b>No items yet</b>
+                                                            <span>Click a product to add into the cart.</span>
+                                                          </div>
+                                                          -->
 
                 <!-- Example items -->
                 <div class="item">

@@ -40,4 +40,38 @@ class ProductAvailabilityService
 
         return $result; // product_id => available_quantity
     }
+
+    public function getAvailabilityByProductId($productId): int
+    {
+        // 1. Load all open batches
+        $ingredientStock = InventoryBatch::where('status', PACKAGE_STATUS_OPEN)
+            ->where('expired_at', '>', now())
+            ->get()
+            ->groupBy('ingredient_id')
+            ->map(fn($batches) => $batches->sum('remaining_quantity_base'));
+
+        // 2. Load recipes
+        $recipes = ProductIngredient::where('product_id', $productId)->get();
+
+        $availableProduct = 0;
+
+        foreach ($recipes as $productId => $items) {
+            $limits = [];
+
+            foreach ($items as $r) {
+                $available = $ingredientStock[$r->ingredient_id] ?? 0;
+
+                if ($available <= 0) {
+                    $limits[] = 0;
+                    continue;
+                }
+
+                $limits[] = intdiv($available, $r->quantity_per_unit);
+            }
+
+            $availableProduct += min($limits);
+        }
+
+        return $availableProduct; // product_id => available_quantity
+    }
 }

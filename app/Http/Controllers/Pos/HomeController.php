@@ -19,10 +19,18 @@ class HomeController extends Controller
 
     public function index()
     {
+        $availability = $this->productAvailabilityService->getAvailability();
+        $products = collect(Product::recordActive()->with('category')->get())
+            ->map(function ($item) use ($availability) {
+                $item->availability = 4; 
+                // $availability[$item->id] ?? 0;
+                return $item;
+            });
+
         return view('pos.index', [
             'categories' => Category::recordActive()->get(),
-            'products' => Product::recordActive()->with('category')->get(),
-            'availability' => $this->productAvailabilityService->getAvailability()
+            'products' => $products,
+            'availability' => $availability
         ]);
     }
 }
